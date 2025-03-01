@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Trainer</title>
+</head>
+<body>
+    <div>
+        <% trainers.forEach(trainer => { %>
+        <div class="student border-box red-border">
+            <div class="student-img-container red-border">
+                <img class="red-border" src="<%= trainer.profileImage %>" alt="error">
+            </div>
+            <div class="student-name-container red-border">
+                <a href="/" data-name="<%= trainer.fullName %>" class="student-name font1 red-border"><%= trainer.fullName%></a>
+            </div>
+            
+        </div>
+        <% }); %>
+    </div>
+</body>
+</html>

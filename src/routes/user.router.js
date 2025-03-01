@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { registerUserPage,registerUser,loginUserPage,loginUser, logoutUser,getCurrentUser } from "../controllers/user.controller.js";
+import { registerUserPage,registerUser,loginUserPage,loginUser, logoutUser,getCurrentUser,selectTrainerPage } from "../controllers/user.controller.js";
 import { upload } from "../middlewares/multer.middleware.js";
 import {verifyUser,verifyTrainer} from "../middlewares/authenticate.middleware.js"
 
@@ -20,6 +20,6 @@ userRouter.route("/login-user").post(loginUser);
 //secured routes
 userRouter.route("/logout-user").get(verifyUser,logoutUser);
 userRouter.route("/user-data").get(verifyUser, getCurrentUser);
-
+userRouter.route("/select-trainer").get(verifyUser,selectTrainerPage);
 
 export {userRouter};

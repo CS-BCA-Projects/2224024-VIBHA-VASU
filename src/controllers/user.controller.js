@@ -193,6 +193,13 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
     throw new ApiError(401, "Invalid refresh token");
   }
 });
+const selectTrainerPage=asyncHandler(async(req,res)=>{
+  if(!req.user){
+    throw new ApiError(401,"Unauthorized Request");
+  }
+  const trainers=await Trainer.find();
+  res.render("selectTrainer",{trainers});
+})
 
 export {
   registerUserPage,
@@ -201,5 +208,6 @@ export {
   loginUserPage,
   logoutUser,
   getCurrentUser,
-  refreshAccessToken
+  refreshAccessToken,
+  selectTrainerPage
 };
