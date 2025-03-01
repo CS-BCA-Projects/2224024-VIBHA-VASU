@@ -5,6 +5,7 @@ import {
   logoutTrainer,
   registerTrainer,
   registerTrainerPage,
+  getCurrentTrainer
 } from "../controllers/trainer.controller.js";
 import { upload } from "../middlewares/multer.middleware.js";
 import {
@@ -33,6 +34,7 @@ trainerRouter.route("/login-trainer").get(loginTrainerPage);
 trainerRouter.route("/login-trainer").post(loginTrainer);
 
 //secured routes
-trainerRouter.route("/logout-trainer").post(verifyTrainer, logoutTrainer);
+trainerRouter.route("/logout-trainer").get(verifyTrainer, logoutTrainer);
+trainerRouter.route("/trainer-data").get(verifyTrainer,getCurrentTrainer)
 
 export { trainerRouter };

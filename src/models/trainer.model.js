@@ -50,6 +50,9 @@ const trainerSchema = new Schema({
     type: String,
     required: false,
   },
+  verified:{
+    type: Boolean,
+  }
 });
 
 trainerSchema.pre("save", async function (next) {

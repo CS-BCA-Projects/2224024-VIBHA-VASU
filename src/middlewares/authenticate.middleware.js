@@ -3,31 +3,34 @@ import { Trainer } from "../models/trainer.model.js"
 import jwt from "jsonwebtoken";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
+import { ApiError } from "../utils/ApiError.js";
 
-const verifyUser = async (req, res, next) => {
-    const token = req.cookies?.userAccessToken;
-    if (!token) {
-        throw new ApiResponse(401, "Unauthorized");
-    }
-    const decordedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-    const user=await User.findById(decordedToken._id);
-    if(!user){
-        throw new ApiResponse(401,"Unauthorized");
-    }
-    req.user=user;
-    next();
-}
-const verifyTrainer=async (req, res, next) => {
+const verifyUser =asyncHandler( async (req, res, next) => {
+    
+        const token = req.cookies?.userAccessToken;
+        if (!token) {
+            throw new ApiError(401, "Token not found");
+        }
+        const decordedToken = await jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+        const user=await User.findById(decordedToken._id);
+        if(!user){
+            throw new ApiError(401,"Unauthorized access");
+        }
+        req.user=user;
+        next();
+    
+});
+const verifyTrainer=asyncHandler(async (req, res, next) => {
     const token = req.cookies?.trainerAccessToken;
     if (!token) {
-        throw new ApiResponse(401, "Unauthorized");
+        throw new ApiError(401, "Token not found");
     }
     const decordedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
     const trainer=await Trainer.findById(decordedToken._id);
     if(!trainer){
-        throw new ApiResponse(401,"Unauthorized");
+        throw new ApiError(401,"Unauthorized access");
     }
     req.trainer=trainer;
     next();
-}
+});
 export {verifyUser,verifyTrainer};

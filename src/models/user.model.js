@@ -45,7 +45,7 @@ const userSchema = new Schema(
       type:Schema.Types.ObjectId,
       ref:"Trainer"   
     },
-    refreshTokens:{
+    refreshToken:{
       type:String
     }
   },

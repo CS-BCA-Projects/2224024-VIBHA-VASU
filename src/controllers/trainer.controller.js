@@ -50,6 +50,7 @@ const registerTrainer = asyncHandler(async (req, res) => {
   if (!profileImage || !certificate) {
     throw new ApiError(400, "Cloudinary link is unavilable");
   }
+  const verified=false;
   try {
     const trainer = await Trainer.create({
       userName: userName,
@@ -60,6 +61,7 @@ const registerTrainer = asyncHandler(async (req, res) => {
       bio,
       certificate: certificate.url,
       password,
+      verified:verified,
     });
     if (!trainer) {
       throw new ApiError(500, "Error while registering on DB");

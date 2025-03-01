@@ -9,11 +9,11 @@ import jwt from "jsonwebtoken";
 const generateAccessandRefreshToken = async (userId) => {
   try {
     const user = await User.findById(userId);
-    const accessToken = await user.generateAccessToken();
-    const refreshToken = await user.generateRefreshToken();
-    user.refreshToken = refreshToken;
+    const userAccessToken = await user.generateAccessToken();
+    const userRefreshToken = await user.generateRefreshToken();
+    user.refreshToken = userRefreshToken;
     await user.save({ validateBeforeSave: false });
-    return { accessToken, refreshToken };
+    return { userAccessToken, userRefreshToken };
   } catch (error) {
     throw new ApiError(
       500,
@@ -93,7 +93,7 @@ const loginUser = asyncHandler(async (req, res) => {
   if (!isPasswordValid) {
     throw new ApiError(401, "Password incorrect");
   }
-  const { accessToken, refreshToken } = await generateAccessandRefreshToken(
+  const { userAccessToken, userRefreshToken } = await generateAccessandRefreshToken(
     user._id
   );
   const updatedUser = await User.findById(user._id).select(
@@ -105,15 +105,15 @@ const loginUser = asyncHandler(async (req, res) => {
   };
   return res
     .status(200)
-    .cookie("userAccessToken", accessToken, options)
-    .cookie("userRefreshToken", refreshToken, options)
+    .cookie("userAccessToken", userAccessToken, options)
+    .cookie("userRefreshToken", userRefreshToken, options)
     .json(
       new ApiResponse(
         200,
         {
           user: updatedUser,
-          accessToken,
-          refreshToken,
+          userAccessToken,
+          userRefreshToken,
         },
         "user loggin successfully"
       )
@@ -142,8 +142,8 @@ const logoutUser = asyncHandler(async (req, res) => {
   };
   return res
     .status(200)
-    .clearCookie("accessToken", options)
-    .clearCookie("refreshToken", options)
+    .clearCookie("userAccessToken", options)
+    .clearCookie("userRefreshToken", options)
     .json(new ApiResponse(200, {}, "user logged out successfully"));
 });
 
@@ -193,7 +193,6 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
     throw new ApiError(401, "Invalid refresh token");
   }
 });
-
 
 export {
   registerUserPage,
