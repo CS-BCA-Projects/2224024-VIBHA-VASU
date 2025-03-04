@@ -7,14 +7,10 @@ const videoSchema=new Schema(
             required: true,
             trim: true,
         },
-        thumbnail:{
-            type:String,   //cloudinary url
+        title:{
+            type:String,
             required:true,
             index:true //index:true is used make attribute searchable easily
-        },
-        title:{
-            type:String,   
-            required:true
         },
         targetAge:[
             {
@@ -37,3 +33,5 @@ const videoSchema=new Schema(
         }
     }
 )
+
+export const Video = mongoose.model("Video", videoSchema);

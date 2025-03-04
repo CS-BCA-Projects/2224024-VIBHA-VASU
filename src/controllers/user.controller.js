@@ -148,6 +148,7 @@ const logoutUser = asyncHandler(async (req, res) => {
 });
 
 const getCurrentUser = asyncHandler(async (req, res) => {
+  console.log(req.user);
   res
     .status(200)
     .json(new ApiResponse(200, req.user, "User fetched successfully"));
@@ -200,6 +201,30 @@ const selectTrainerPage=asyncHandler(async(req,res)=>{
   const trainers=await Trainer.find();
   res.render("selectTrainer",{trainers});
 })
+const selectTrainer=asyncHandler(async(req,res)=>{
+  const {userId}=req.params;
+  const trainer=await Trainer.findById(userId);
+  if(!trainer){
+    throw new ApiError(401,"No such trainer found");
+  }
+  const user=await User.findByIdAndUpdate(
+    req.user._id,
+    {
+      $set: {
+        trainer:trainer._id,
+      },
+    },
+    {
+      new: true,
+    }
+  ).select("-password -refreshToken");
+  if(!user){
+    throw new ApiError(401,"Error while selecting trainer");
+  }
+  return res
+    .status(200)
+    .json(new ApiResponse(200, user, "Trainer selected successfully"));
+})
 
 export {
   registerUserPage,
@@ -209,5 +234,6 @@ export {
   logoutUser,
   getCurrentUser,
   refreshAccessToken,
-  selectTrainerPage
+  selectTrainerPage,
+  selectTrainer
 };

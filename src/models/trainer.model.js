@@ -52,7 +52,13 @@ const trainerSchema = new Schema({
   },
   verified:{
     type: Boolean,
-  }
+  },
+  clients:[
+    {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    },
+  ]
 });
 
 trainerSchema.pre("save", async function (next) {

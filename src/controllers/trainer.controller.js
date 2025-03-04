@@ -4,6 +4,7 @@ import { ApiError } from "../utils/ApiError.js";
 import { uploadOnCloudinary, deleteOnCloudinary } from "../utils/cloudinary.js";
 import { User } from "../models/user.model.js"; 
 import { Trainer } from "../models/trainer.model.js";
+import { Video } from "../models/video.model.js";
 import jwt from "jsonwebtoken";
 
 const generateAccessandRefreshToken = async (trainerId) => {
@@ -201,7 +202,47 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
     throw new ApiError(401, "Invalid refresh token");
   }
 });
+const videoInputPage=asyncHandler(async(req,res)=>{
+  res.render("uploadVideo");
+});
+const uploadVideo=asyncHandler(async(req,res)=>{
+  const {videoFile,title,targetAge,targetGender,targetLevel} = req.body;
+  if(!videoFile||!title||!targetAge||!targetGender||!targetLevel){
+    throw new ApiError(400, "All fields are required");
+  }
+  if(!req.trainer){
+    throw new ApiError(400, "Trainer not found");
+  }
+  try {
+    const video=await Video.create(
+      {
+        videoFile:videoFile,
+        title:title,
+        targetAge:targetAge,
+        targetGender:targetGender,
+        targetLevel:targetLevel,
+        owner:req.trainer._id
+      }
+    )
+    if (!video) {
+      throw new ApiError(500, "Error while uploading on DB on DB");
+    }
+    const uploadedVideo=await Video.findById(video._id);
+    if (!uploadedVideo) {
+      throw new ApiError(500, "Error while uploading on DB on DB");
+    }
+    return res
+      .status(201)
+      .json(new ApiResponse(200, uploadedVideo, "Video Uploaded on DB"));
 
+  } catch (error) {
+    if (error.code === 11000) {
+      throw new ApiError(409, "Not regestering User already exists");
+    }
+    throw new ApiError(500, "Error while registering on DB");
+  }
+
+});
 
 export {
   registerTrainerPage,
@@ -210,5 +251,7 @@ export {
   loginTrainerPage,
   logoutTrainer,
   getCurrentTrainer,
-  refreshAccessToken
+  refreshAccessToken,
+  videoInputPage,
+  uploadVideo
 };

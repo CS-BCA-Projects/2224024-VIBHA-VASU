@@ -4,18 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
+    <link rel="stylesheet" href="/css/utility.css">
+    <link rel="stylesheet" href="/css/login-register.css">
 </head>
 <body>
-    <h1>Login Trainer</h1>
+    <h1 class="heading">Login Trainer</h1>
     <form action="/login-trainer" method="POST">
-        <div>
-            <div>
-                <input type="text" id="userName" name="userName" placeholder="Username">
+        <div class="form">
+            <div class="username-box">
+                <input class="username" type="text" id="userName" name="userName" placeholder="Username">
             </div>
-            <div>
-                <input type="password" name="password" id="password" placeholder="Password">
+            <div class="password-box">
+                <input class="password" type="password" name="password" id="password" placeholder="Password">
             </div>
-            <div>
+            <div class="submit-box">
                 <button class="submit" type="submit" id="Register">Login</button>
             </div>
         </div>
