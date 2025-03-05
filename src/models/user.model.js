@@ -47,6 +47,9 @@ const userSchema = new Schema(
     },
     refreshToken:{
       type:String
+    },
+    lastTrained:{
+      type:Date,//stores the date of last training
     }
   },
   {

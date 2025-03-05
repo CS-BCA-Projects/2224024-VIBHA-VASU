@@ -4,6 +4,7 @@ import { ApiError } from "../utils/ApiError.js";
 import { uploadOnCloudinary, deleteOnCloudinary } from "../utils/cloudinary.js";
 import { User } from "../models/user.model.js";
 import { Trainer } from "../models/trainer.model.js";
+import { Video } from "../models/video.model.js";
 import jwt from "jsonwebtoken";
 
 const generateAccessandRefreshToken = async (userId) => {
@@ -225,6 +226,64 @@ const selectTrainer=asyncHandler(async(req,res)=>{
     .status(200)
     .json(new ApiResponse(200, user, "Trainer selected successfully"));
 })
+const trainingPage=asyncHandler(async(req,res)=>{
+  if(!req.user){
+    throw new ApiError(401,"Unauthorized Request");
+  }
+  if(!req.user.trainer){
+    throw new ApiError(401,"Trainer not selected");
+  }
+  const trainer=await Trainer.findById(req.user.trainer);
+  if(!trainer){
+    throw new ApiError(401,"No such trainer found");
+  }
+  const birthDate=req.user.dob;
+  const today=new Date()
+  let age = today.getFullYear() - birthDate.getFullYear();
+  const monthDiff = today.getMonth() - birthDate.getMonth();
+  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+    age--;
+  }
+  let userAgeGroup;
+  if(age<18){
+    userAgeGroup='-18'
+  }
+  else if(age<45){
+    userAgeGroup='18-45'
+  }
+  else if(age<60){
+    userAgeGroup='45-60'
+  }
+  else{
+    userAgeGroup='60-'
+  }
+  console.log(userAgeGroup);
+  const userLevel=`L${(Math.floor((req.user.progressPoints)/20))+1}`
+  console.log(userLevel);
+  const videos=await Video.aggregate([
+    {
+      $match:{
+        owner:trainer._id,
+      },
+    },
+    {
+      $match:{
+        targetGender: { $in: [req.user.gender] }
+      }
+    },
+    {
+      $match:{
+        targetAge: { $in: [userAgeGroup] }
+      }
+    },
+    {
+      $match:{
+        targetLevel: { $in: [userLevel] }
+      }
+    },
+  ])
+  res.render("trainingPage",{videos});
+});
 
 export {
   registerUserPage,
@@ -235,5 +294,6 @@ export {
   getCurrentUser,
   refreshAccessToken,
   selectTrainerPage,
-  selectTrainer
+  selectTrainer,
+  trainingPage
 };

@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>YouTube Video Playlist</title>
+</head>
+<body>
+  <% for (let video of videos) { %>
+    <iframe width="640" height="360"
+      src="<%= video.videoFile.replace('watch?v=', 'embed/') %>"
+      frameborder="0" allowfullscreen>
+    </iframe>
+  <% } %>
+</body>
+</html>

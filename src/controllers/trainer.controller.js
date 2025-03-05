@@ -210,6 +210,10 @@ const uploadVideo=asyncHandler(async(req,res)=>{
   if(!videoFile||!title||!targetAge||!targetGender||!targetLevel){
     throw new ApiError(400, "All fields are required");
   }
+  const existVideo=await Video.findOne({videoFile});
+  if(existVideo){
+    throw new ApiError(400, "Video already present");
+  }
   if(!req.trainer){
     throw new ApiError(400, "Trainer not found");
   }
