@@ -1,11 +1,13 @@
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { ApiError } from "../utils/ApiError.js";
+import { dobToAgeFinder } from "../utils/dobToAge.js";
 import { uploadOnCloudinary, deleteOnCloudinary } from "../utils/cloudinary.js";
 import { User } from "../models/user.model.js";
 import { Trainer } from "../models/trainer.model.js";
 import { Video } from "../models/video.model.js";
 import jwt from "jsonwebtoken";
+
 
 const generateAccessandRefreshToken = async (userId) => {
   try {
@@ -199,7 +201,7 @@ const selectTrainerPage=asyncHandler(async(req,res)=>{
   if(!req.user){
     throw new ApiError(401,"Unauthorized Request");
   }
-  const trainers=await Trainer.find();
+  const trainers=await Trainer.find({verified:true});
   res.render("selectTrainer",{trainers});
 })
 const selectTrainer=asyncHandler(async(req,res)=>{
@@ -237,13 +239,8 @@ const trainingPage=asyncHandler(async(req,res)=>{
   if(!trainer){
     throw new ApiError(401,"No such trainer found");
   }
-  const birthDate=req.user.dob;
-  const today=new Date()
-  let age = today.getFullYear() - birthDate.getFullYear();
-  const monthDiff = today.getMonth() - birthDate.getMonth();
-  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
-    age--;
-  }
+  const age=dobToAgeFinder(req.user.dob);
+  console.log(age);
   let userAgeGroup;
   if(age<18){
     userAgeGroup='-18'

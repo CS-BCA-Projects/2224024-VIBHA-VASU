@@ -10,6 +10,8 @@ connectDB()
   .then(() => {
     app.listen(process.env.PORT || 9000, () => {
       console.log(`Server is runing at port : ${process.env.PORT}`);
+      console.log(`http://localhost:${process.env.PORT}/gh4g453j5/register-admin`);
+      console.log(`http://localhost:${process.env.PORT}/gh4g453j5/login-admin`);
       console.log(`http://localhost:${process.env.PORT}`);
     });
   })

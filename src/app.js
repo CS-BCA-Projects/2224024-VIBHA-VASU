@@ -17,9 +17,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 import { userRouter } from "./routes/user.router.js";
-app.use('/',userRouter);
+app.use('/user',userRouter);
 import { trainerRouter } from "./routes/trainer.router.js";
-app.use('/',trainerRouter);
+app.use('/trainer',trainerRouter);
+import { adminRouter } from "./routes/admin.router.js";
+app.use('/gh4g453j5',adminRouter);
 app.get('/',(req,res)=>{
     res.render('index');
 })

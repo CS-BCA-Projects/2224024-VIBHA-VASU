@@ -120,7 +120,7 @@ const loginTrainer = asyncHandler(async (req, res) => {
       new ApiResponse(
         200,
         {
-          user: updatedTrainer,
+          trainer: updatedTrainer,
           accessToken,
           refreshToken,
         },
@@ -187,7 +187,7 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
     return res
       .status(200)
       .cookie("trainerAccessToken", accessToken, options)
-      .cookie("trainerRefreshToken", newRefreshTokenefreshToken, options)
+      .cookie("trainerRefreshToken", newRefreshToken, options)
       .json(
         new ApiResponse(
           200,
@@ -247,7 +247,17 @@ const uploadVideo=asyncHandler(async(req,res)=>{
   }
 
 });
-
+const getTrainerVideos=asyncHandler(async(req,res)=>{
+  const videos=await Video.find(
+    {
+      owner:req.trainer._id
+    }
+  );
+  if(!videos){
+    throw new ApiError(404, "No videos found");
+  }
+  res.render("trainerVideos",{videos});
+});
 export {
   registerTrainerPage,
   registerTrainer,
@@ -257,5 +267,6 @@ export {
   getCurrentTrainer,
   refreshAccessToken,
   videoInputPage,
-  uploadVideo
+  uploadVideo,
+  getTrainerVideos
 };

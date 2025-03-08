@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= trainerData.fullName %></title>
+</head>
+<body>
+    <div>
+        <h1><%= trainerData.fullName %></h1>
+        <h2><%= trainerData.userName %></h2>
+        <div>
+            <img src="<%= trainerData.profileImage %>" alt="error">
+        </div>
+        <div>
+            <img src="<%= trainerData.certificate %>" alt="error">
+        </div>
+        <div>
+            <%= trainerData.bio %>
+        </div>
+        <div>
+            <%= trainerData.age %>
+        </div>
+        <div>
+            <%= trainerData.gender %>
+        </div>
+        <div>
+            <a href="/gh4g453j5/trainer-verified/<%= trainerData.id %>">Verify Trainer</a>
+        </div>
+    </div>
+</body>
+</html>
