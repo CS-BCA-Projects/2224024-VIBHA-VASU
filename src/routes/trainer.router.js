@@ -9,6 +9,7 @@ import {
   videoInputPage,
   uploadVideo,
   getTrainerVideos,
+  getEnrolledUsers,
 } from "../controllers/trainer.controller.js";
 import { upload } from "../middlewares/multer.middleware.js";
 import {
@@ -42,5 +43,6 @@ trainerRouter.route("/trainer-data").get(verifyTrainer,getCurrentTrainer);
 trainerRouter.route("/upload-video").get(verifyTrainer,videoInputPage);
 trainerRouter.route("/upload-video").post(verifyTrainer,uploadVideo)
 trainerRouter.route("/trainer-videos").get(verifyTrainer,getTrainerVideos);
+trainerRouter.route("/enrolled-users").get(verifyTrainer,getEnrolledUsers);
 
 export { trainerRouter };

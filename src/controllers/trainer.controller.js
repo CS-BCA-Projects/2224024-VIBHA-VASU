@@ -258,6 +258,17 @@ const getTrainerVideos=asyncHandler(async(req,res)=>{
   }
   res.render("trainerVideos",{videos});
 });
+const getEnrolledUsers=asyncHandler(async(req,res)=>{
+  const enrolledUsers=await User.find(
+    {
+      trainer:req.trainer._id
+    }
+  );
+  if(!enrolledUsers){
+    throw new ApiError(404, "No enrolled users found");
+  }
+  res.render("enrolledUsers",{enrolledUsers});
+});
 export {
   registerTrainerPage,
   registerTrainer,
@@ -268,5 +279,6 @@ export {
   refreshAccessToken,
   videoInputPage,
   uploadVideo,
-  getTrainerVideos
+  getTrainerVideos,
+  getEnrolledUsers,
 };
