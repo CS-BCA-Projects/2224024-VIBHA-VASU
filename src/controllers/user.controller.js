@@ -204,8 +204,27 @@ const selectTrainerPage=asyncHandler(async(req,res)=>{
   const trainers=await Trainer.find({verified:true});
   res.render("selectTrainer",{trainers});
 })
+const trainerProfile=asyncHandler(async(req,res)=>{
+  if(!req.user){
+    throw new ApiError(401,"Unauthorized Request");
+  }
+  const {userName}=req.params;
+  const trainer=await Trainer.findOne({userName});
+  const age=dobToAgeFinder(req.user.dob);
+  const trainerData={
+    id:trainer._id,
+    userName:trainer.userName,
+    fullName:trainer.fullName,
+    age:age,
+    profileImage:trainer.profileImage,
+    gender:trainer.gender,
+    bio:trainer.bio,
+  }
+  res.render("trainerProfile",{trainerData});
+})
 const selectTrainer=asyncHandler(async(req,res)=>{
   const {userId}=req.params;
+  console.log(userId);
   const trainer=await Trainer.findById(userId);
   if(!trainer){
     throw new ApiError(401,"No such trainer found");
@@ -291,6 +310,7 @@ export {
   getCurrentUser,
   refreshAccessToken,
   selectTrainerPage,
+  trainerProfile,
   selectTrainer,
   trainingPage
 };

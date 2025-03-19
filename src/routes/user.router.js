@@ -7,6 +7,7 @@ import {
   logoutUser,
   getCurrentUser,
   selectTrainerPage,
+  trainerProfile,
   selectTrainer,
   trainingPage
 } from "../controllers/user.controller.js";
@@ -36,7 +37,8 @@ userRouter.route("/login-user").post(loginUser);
 userRouter.route("/logout-user").get(verifyUser, logoutUser);
 userRouter.route("/user-data").get(verifyUser, getCurrentUser);
 userRouter.route("/select-trainer").get(verifyUser, selectTrainerPage);
-userRouter.route("/select-trainer/:userId").get(verifyUser, selectTrainer);
+userRouter.route("/select-trainer/:userName").get(verifyUser, trainerProfile);
+userRouter.route("/select-trainer/trainerProfile/:userId").get(verifyUser,selectTrainer);
 userRouter.route("/training-page").get(verifyUser,trainingPage);
 
 export { userRouter };

@@ -5,6 +5,7 @@ import { uploadOnCloudinary, deleteOnCloudinary } from "../utils/cloudinary.js";
 import { User } from "../models/user.model.js"; 
 import { Trainer } from "../models/trainer.model.js";
 import { Video } from "../models/video.model.js";
+import { dobToAgeFinder } from "../utils/dobToAge.js";
 import jwt from "jsonwebtoken";
 
 const generateAccessandRefreshToken = async (trainerId) => {
@@ -258,12 +259,35 @@ const getTrainerVideos=asyncHandler(async(req,res)=>{
   }
   res.render("trainerVideos",{videos});
 });
+const deleteVideo=asyncHandler(async(req,res)=>{
+  const {id}=req.params;
+  try {
+    const deleteVideo=await Video.findByIdAndDelete(id);
+  } catch (error) {
+    
+  }
+})
 const getEnrolledUsers=asyncHandler(async(req,res)=>{
-  const enrolledUsers=await User.find(
+  const myUsers=await User.find(
     {
       trainer:req.trainer._id
     }
   );
+  
+  let enrolledUsers=[];
+  myUsers.forEach(user => {
+    const age=dobToAgeFinder(user.dob);
+    const userLevel=`${(Math.floor((user.progressPoints)/20))+1}`
+    enrolledUsers.push({
+      id:user._id,
+      userName:user.userName,
+      fullName:user.fullName,
+      profileImage:user.profileImage,
+      age:age,
+      gender:user.gender,
+      level:userLevel,
+    })
+  });
   if(!enrolledUsers){
     throw new ApiError(404, "No enrolled users found");
   }
@@ -280,5 +304,6 @@ export {
   videoInputPage,
   uploadVideo,
   getTrainerVideos,
+  deleteVideo,
   getEnrolledUsers,
 };

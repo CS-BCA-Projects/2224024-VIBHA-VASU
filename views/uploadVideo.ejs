@@ -12,91 +12,201 @@
     />
   </head>
   <body>
-    <h1>Upload Video</h1>
-    <form action="/upload-video" method="POST">
-      <div>
-        <input
-          type="text"
-          id="videoFile"
-          class="videoFile"
-          name="videoFile"
-          placeholder="Youtube Link of video"
-        />
+    <nav class="navbar navbar-expand-lg bg-body-tertiary mb-3">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">YogiMaster</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="#">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Features</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Pricing</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+            </li>
+          </ul>
+        </div>
       </div>
-      <div>
-        <input
-          type="text"
-          id="title"
-          class="title"
-          name="title"
-          placeholder="Title"
-        />
-      </div>
-      <div>
-        <label
-          ><input type="checkbox" name="targetAge" value="-18" id="-18" />Below
-          18</label
-        >
-        <label
-          ><input type="checkbox" name="targetAge" value="18-45" id="18-45" />18
-          to 45</label
-        >
-        <label
-          ><input type="checkbox" name="targetAge" value="46-60" id="46-60" />46
-          to 60</label
-        >
-        <label
-          ><input type="checkbox" name="targetAge" value="60-" id="61-" />above
-          60</label
-        >
-      </div>
-      <div>
-        <label
-          ><input 
-          type="checkbox" 
-          name="targetGender" 
-          id="male" 
-          value="male"
-          />Male</label
-        >
-        <label
-          ><input
-            type="checkbox"
-            name="targetGender"
-            id="female"
-            value="female"
-          />Female</label
-        >
-        <label
-          ><input
-            type="checkbox"
-            name="targetGender"
-            id="others"
-            value="others"
-          />Others</label
-        >
-      </div>
-      <div>
-        <label
-          ><input type="checkbox" name="targetLevel" value="L1" id="L1" />Level 1</label
-        >
-        <label
-          ><input type="checkbox" name="targetLevel" value="L2" id="L2" />Level 2</label
-        >
-        <label
-          ><input type="checkbox" name="targetLevel" value="L3" id="L3" />Level 3</label
-        >
-        <label
-          ><input type="checkbox" name="targetLevel" value="L4" id="L4" />Level 4</label
-        >
-        <label
-          ><input type="checkbox" name="targetLevel" value="L5" id="L5" />Level 5</label
-        >
-      </div>
-      <div>
-        <button class="submit" type="submit" id="Upload">Upload</button>
-      </div>
-    </form>
+    </nav>
+    <div class="d-flex justify-content-center mb-3">
+      <h1 class="display-4">Upload Video</h1>
+    </div>
+    <div class="container p-3 border border-3 rounded-4 bg-black">
+      <form action="/upload-video" method="POST">
+        <div class="form-floating mb-3">
+          <input
+            type="text"
+            id="videoFile"
+            class="form-control"
+            name="videoFile"
+            placeholder="Youtube Link of video"
+          />
+          <label for="videoFile" class="form-label"
+            >Youtube Link of video</label
+          >
+        </div>
+        <div class="form-floating mb-3">
+          <input
+            type="text"
+            id="title"
+            class="form-control"
+            name="title"
+            placeholder="Title"
+          />
+          <label for="title" class="form-label">Title</label>
+        </div>
+        Targeted Age Group
+        <div class="mb-2">
+          <div class="form-check form-check-inline">
+            <input
+              type="checkbox"
+              class="form-check-input"
+              name="targetAge"
+              value="-18"
+              id="-18"
+            />
+            <label class="form-check-label" for="-18">Below 18</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              type="checkbox"
+              class="form-check-input"
+              name="targetAge"
+              value="18-45"
+              id="18-45"
+            />
+            <label class="form-check-label" for="18-45">18 to 45</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              type="checkbox"
+              class="form-check-input"
+              name="targetAge"
+              value="46-60"
+              id="46-60"
+            />
+            <label class="form-check-label" for="46-60">46 to 60</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              type="checkbox"
+              class="form-check-input"
+              name="targetAge"
+              value="60-"
+              id="60-"
+            />
+            <label class="form-check-label" for="60-">above 60</label>
+          </div>
+        </div>
+        Targeted Gender
+        <div class="mb-2">
+          <div class="form-check form-check-inline">
+            <input
+              type="checkbox"
+              class="form-check-input"
+              name="targetGender"
+              value="male"
+              id="male"
+            />
+            <label class="form-check-label" for="male">Male</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              type="checkbox"
+              class="form-check-input"
+              name="targetGender"
+              id="female"
+              value="female"
+            />
+            <label class="form-check-label" for="female">Female</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              type="checkbox"
+              class="form-check-input"
+              name="targetGender"
+              id="others"
+              value="others"
+            />
+            <label class="form-check-label" for="others">Others</label>
+          </div>
+        </div>
+        Targeted Level
+        <div class="mb-3">
+          <div class="form-check form-check-inline">
+            <input
+              type="checkbox"
+              class="form-check-input"
+              name="targetLevel"
+              value="L1"
+              id="L1"
+            />
+            <label class="form-check-label" for="L1">Level 1</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              type="checkbox"
+              class="form-check-input"
+              name="targetLevel"
+              value="L2"
+              id="L2"
+            />
+            <label class="form-check-label" for="L2">Level 2</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              type="checkbox"
+              class="form-check-input"
+              name="targetLevel"
+              value="L3"
+              id="L3"
+            />
+            <label class="form-check-label" for="L3">Level 3</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              type="checkbox"
+              class="form-check-input"
+              name="targetLevel"
+              value="L4"
+              id="L4"
+            />
+            <label class="form-check-label" for="L4">Level 4</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              type="checkbox"
+              class="form-check-input"
+              name="targetLevel"
+              value="L5"
+              id="L5"
+            />
+            <label class="form-check-label" for="L5">Level 5</label>
+          </div>
+        </div>
+        <div class="mb-3">
+          <button class="btn btn-primary" type="submit" id="Upload">
+            Upload
+          </button>
+        </div>
+      </form>
+    </div>
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
