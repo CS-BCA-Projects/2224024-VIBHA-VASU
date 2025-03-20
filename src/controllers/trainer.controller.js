@@ -261,10 +261,17 @@ const getTrainerVideos=asyncHandler(async(req,res)=>{
 });
 const deleteVideo=asyncHandler(async(req,res)=>{
   const {id}=req.params;
+  console.log(id);
   try {
-    const deleteVideo=await Video.findByIdAndDelete(id);
+    const deletedVideo=await Video.findByIdAndDelete(id);
+    console.log(deletedVideo);
+    return res
+    .redirect('/trainer/trainer-videos');
   } catch (error) {
-    
+    if (error.code === 11000) {
+      throw new ApiError(409, "Not regestering User already exists");
+    }
+    throw new ApiError(500, "Error while Deleting on DB");
   }
 })
 const getEnrolledUsers=asyncHandler(async(req,res)=>{

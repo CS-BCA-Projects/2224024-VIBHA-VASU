@@ -7,6 +7,7 @@ import { User } from "../models/user.model.js";
 import { Trainer } from "../models/trainer.model.js";
 import { Video } from "../models/video.model.js";
 import jwt from "jsonwebtoken";
+import e from "express";
 
 
 const generateAccessandRefreshToken = async (userId) => {
@@ -300,7 +301,75 @@ const trainingPage=asyncHandler(async(req,res)=>{
   ])
   res.render("trainingPage",{videos});
 });
-
+const updateProgressPoints=asyncHandler(async(req,res)=>{
+  console.log(req.body);
+  console.log("User completed all videos!");
+  if(!req.user){
+    throw new ApiError(401,"Unauthorized Request");
+  }
+  if(!req.user.trainer){
+    throw new ApiError(401,"Trainer not selected");
+  }
+  const createdAt=req.user.createdAt;
+  const today=new Date();
+  const diffTime = Math.abs(today.getTime() - req.user.lastTrained?.getTime()); // Difference in milliseconds
+  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+  console.log(diffDays);
+  if(!req.user.lastTrained){
+    console.log("User's first day of training");
+    const user=await User.findByIdAndUpdate(
+      req.user._id,
+      {
+        $inc: {
+          progressPoints:1,
+        },
+        $set:{
+          lastTrained:today,
+        }
+      },
+      {
+        new: true,
+      }
+    ).select("-password -refreshToken");
+  }
+  else if(diffDays===0){
+    console.log("User's has already trained today");
+  }
+  else if(diffDays===1){
+    console.log("User's has trained yesterday");
+    const user=await User.findByIdAndUpdate(
+      req.user._id,
+      {
+        $inc: {
+          progressPoints:1,
+        },
+        $set:{
+          lastTrained:today,
+        }
+      },
+      {
+        new: true,
+      }
+    ).select("-password -refreshToken");
+  }
+  else if(diffDays>1){
+    console.log("User's has not trained yesterday");
+    const user=await User.findByIdAndUpdate(
+      req.user._id,
+      {
+        $inc: {
+          progressPoints:-diffDays+1,
+        },
+        $set:{
+          lastTrained:today,
+        }
+      },
+      {
+        new: true,
+      }
+    ).select("-password -refreshToken");
+  }
+})
 export {
   registerUserPage,
   registerUser,
@@ -312,5 +381,6 @@ export {
   selectTrainerPage,
   trainerProfile,
   selectTrainer,
-  trainingPage
+  trainingPage,
+  updateProgressPoints,
 };

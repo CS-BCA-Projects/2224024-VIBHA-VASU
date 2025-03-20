@@ -9,7 +9,8 @@ import {
   selectTrainerPage,
   trainerProfile,
   selectTrainer,
-  trainingPage
+  trainingPage,
+  updateProgressPoints,
 } from "../controllers/user.controller.js";
 import { upload } from "../middlewares/multer.middleware.js";
 import {
@@ -40,5 +41,6 @@ userRouter.route("/select-trainer").get(verifyUser, selectTrainerPage);
 userRouter.route("/select-trainer/:userName").get(verifyUser, trainerProfile);
 userRouter.route("/select-trainer/trainerProfile/:userId").get(verifyUser,selectTrainer);
 userRouter.route("/training-page").get(verifyUser,trainingPage);
+userRouter.route("/training-page/completed").post(verifyUser,updateProgressPoints);
 
 export { userRouter };

@@ -42,7 +42,7 @@ trainerRouter.route("/login-trainer").post(loginTrainer);
 trainerRouter.route("/logout-trainer").get(verifyTrainer, logoutTrainer);
 trainerRouter.route("/trainer-data").get(verifyTrainer,getCurrentTrainer);
 trainerRouter.route("/upload-video").get(verifyTrainer,videoInputPage);
-trainerRouter.route("/upload-video").post(verifyTrainer,uploadVideo)
+trainerRouter.route("/upload-video").post(verifyTrainer,uploadVideo);
 trainerRouter.route("/trainer-videos").get(verifyTrainer,getTrainerVideos);
 trainerRouter.route("/trainer-videos/delete/:id").get(verifyTrainer,deleteVideo);
 trainerRouter.route("/enrolled-users").get(verifyTrainer,getEnrolledUsers);
