@@ -84,17 +84,7 @@ const loginAdmin = asyncHandler(async (req, res) => {
     .status(200)
     .cookie("adminAccessToken", accessToken, options)
     .cookie("adminRefreshToken", refreshToken, options)
-    .json(
-      new ApiResponse(
-        200,
-        {
-          admin: updatedAdmin,
-          accessToken,
-          refreshToken,
-        },
-        "admin loggin successfully"
-      )
-    );
+    .redirect('/gh4g453j5/trainer-verification');
 });
 
 const trainerverificationPage = asyncHandler(async (req, res) => {
@@ -143,7 +133,7 @@ const trainerVerification = asyncHandler(async (req, res) => {
   }
   return res
     .status(200)
-    .json(new ApiResponse(200, "Trainer verified successfully"));
+    .redirect('/gh4g453j5/trainer-verification');
 });
 
 export {

@@ -76,8 +76,7 @@ const registerTrainer = asyncHandler(async (req, res) => {
       throw new ApiError(500, "Error while registering on DB");
     }
     return res
-      .status(201)
-      .json(new ApiResponse(200, createdTrainer, "User Created on DB"));
+      .redirect('/trainer/Login-trainer');
   } 
   catch (error) {
     await deleteOnCloudinary(profileImage.public_id);
@@ -117,17 +116,7 @@ const loginTrainer = asyncHandler(async (req, res) => {
     .status(200)
     .cookie("trainerAccessToken", accessToken, options)
     .cookie("trainerRefreshToken", refreshToken, options)
-    .json(
-      new ApiResponse(
-        200,
-        {
-          trainer: updatedTrainer,
-          accessToken,
-          refreshToken,
-        },
-        "trainer loggin successfully"
-      )
-    );
+    .redirect('/trainer/trainer-data');
 });
 
 const loginTrainerPage = asyncHandler(async (req, res) => {
@@ -154,13 +143,23 @@ const logoutTrainer = asyncHandler(async (req, res) => {
     .status(200)
     .clearCookie("trainerAccessToken", options)
     .clearCookie("trainerRefreshToken", options)
-    .json(new ApiResponse(200, {}, "user logged out successfully"));
+    .redirect('/');
 });
 
 const getCurrentTrainer = asyncHandler(async (req, res) => {
+  const trainer=req.trainer;
+  const age=dobToAgeFinder(trainer.dob);
+  const trainerData={
+    id:trainer._id,
+    userName:trainer.userName,
+    fullName:trainer.fullName,
+    age:age,
+    profileImage:trainer.profileImage,
+    gender:trainer.gender,
+    bio:trainer.bio,
+  }
   res
-    .status(200)
-    .json(new ApiResponse(200, req.trainer, "User fetched successfully"));
+    .render('trainer',{trainerData});
 });
 const refreshAccessToken = asyncHandler(async (req, res) => {
   const incomingRefreshToken = req.cookies?.trainerRefreshToken;

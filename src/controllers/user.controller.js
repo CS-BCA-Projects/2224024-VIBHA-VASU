@@ -72,8 +72,7 @@ const registerUser = asyncHandler(async (req, res) => {
       throw new ApiError(500, "Error while registering on DB");
     }
     return res
-      .status(201)
-      .json(new ApiResponse(200, createdUser, "User Created on DB"));
+      .redirect('/user/login-user');
   } catch (error) {
     await deleteOnCloudinary(profileImage.public_id);
     if (error.code === 11000) {
@@ -85,7 +84,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
 const loginUser = asyncHandler(async (req, res) => {
   const { userName, password } = req.body;
-  console.log(userName, password);
+  console.log(userName);
   if (!userName) {
     throw new ApiError(400, "All fields are required");
   }
@@ -111,17 +110,7 @@ const loginUser = asyncHandler(async (req, res) => {
     .status(200)
     .cookie("userAccessToken", userAccessToken, options)
     .cookie("userRefreshToken", userRefreshToken, options)
-    .json(
-      new ApiResponse(
-        200,
-        {
-          user: updatedUser,
-          userAccessToken,
-          userRefreshToken,
-        },
-        "user loggin successfully"
-      )
-    );
+    .redirect('/user/user-data');
 });
 
 const loginUserPage = asyncHandler(async (req, res) => {
@@ -148,14 +137,25 @@ const logoutUser = asyncHandler(async (req, res) => {
     .status(200)
     .clearCookie("userAccessToken", options)
     .clearCookie("userRefreshToken", options)
-    .json(new ApiResponse(200, {}, "user logged out successfully"));
+    .redirect('/');
 });
 
 const getCurrentUser = asyncHandler(async (req, res) => {
   console.log(req.user);
-  res
-    .status(200)
-    .json(new ApiResponse(200, req.user, "User fetched successfully"));
+  const age=dobToAgeFinder(req.user.dob);
+  const level=(Math.floor((req.user.progressPoints)/20))+1
+  const trainer=await Trainer.findById(req.user.trainer);
+  const userData={
+    id:req.user._id,
+    userName:req.user.userName,
+    fullName:req.user.fullName,
+    profileImage:req.user.profileImage,
+    age:age,
+    gender:req.user.gender,
+    level:level,
+    trainer:trainer.fullName
+  }
+  res.render('user',{userData});
 });
 const refreshAccessToken = asyncHandler(async (req, res) => {
   const incomingRefreshToken = req.cookies?.refreshToken;
@@ -211,7 +211,7 @@ const trainerProfile=asyncHandler(async(req,res)=>{
   }
   const {userName}=req.params;
   const trainer=await Trainer.findOne({userName});
-  const age=dobToAgeFinder(req.user.dob);
+  const age=dobToAgeFinder(trainer.dob);
   const trainerData={
     id:trainer._id,
     userName:trainer.userName,
@@ -246,7 +246,7 @@ const selectTrainer=asyncHandler(async(req,res)=>{
   }
   return res
     .status(200)
-    .json(new ApiResponse(200, user, "Trainer selected successfully"));
+    .redirect('/user/user-data');
 })
 const trainingPage=asyncHandler(async(req,res)=>{
   if(!req.user){
@@ -310,7 +310,6 @@ const updateProgressPoints=asyncHandler(async(req,res)=>{
   if(!req.user.trainer){
     throw new ApiError(401,"Trainer not selected");
   }
-  const createdAt=req.user.createdAt;
   const today=new Date();
   const diffTime = Math.abs(today.getTime() - req.user.lastTrained?.getTime()); // Difference in milliseconds
   const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));

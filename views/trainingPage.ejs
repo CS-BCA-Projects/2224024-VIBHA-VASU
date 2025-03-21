@@ -1,97 +1,146 @@
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="dark">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body>
-  <nav class="navbar navbar-expand-lg bg-body-tertiary">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="#">YogiMaster</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Features</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Pricing</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link disabled" aria-disabled="true">Disabled</a>
-          </li>
-        </ul>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>YogiMaster</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      .video-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .video-wrapper {
+      position: relative;
+      width: 100%;
+      padding-bottom: 56.25%; /* 16:9 aspect ratio */
+    }
+    .video-wrapper iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">YogiMaster</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" href="/user/select-trainer"
+                >Select Trainer</a
+              >
+            </li>
+          </ul>
+          <div class="d-flex">
+            <a class="nav-link active fw-bold" href="/user/user-data"
+              >Profile</a
+            >
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <div class="mt-4 m-xl-4">
+      <div class="row">
+        <% for (let i = 0; i < videos.length; i++) { %>
+        <div class="col-12 col-md-6 col-lg-4 video-container">
+          <div class="video-wrapper">
+            <iframe
+            class="video-player"
+            id="video-<%= i %>"
+            width="100%"
+            height="360"
+            src="<%= videos[i].videoFile.replace('watch?v=', 'embed/') %>?enablejsapi=1"
+            frameborder="0"
+            allowfullscreen
+          >
+          </iframe>
+          </div>
+        </div>
+        <% } %>
       </div>
     </div>
-  </nav>
-  
-  <div class="container mt-4">
-    <% for (let i = 0; i < videos.length; i++) { %>
-      <div>
-        <iframe class="video-player" id="video-<%= i %>" width="640" height="360"
-          src="<%= videos[i].videoFile.replace('watch?v=', 'embed/') %>?enablejsapi=1"
-          frameborder="0" allowfullscreen>
-        </iframe>
-      </div>
-    <% } %>
-  </div>
-  
-  <script>
-    let videoPlayers = document.querySelectorAll(".video-player");
-    let playerObjects = [];
-  
-    function onYouTubeIframeAPIReady() {
-      videoPlayers.forEach((iframe, index) => {
-        playerObjects[index] = new YT.Player(iframe, {
-          events: {
-            "onReady": (event) => {
-              if (index === 0) event.target.playVideo(); // Start first video
-            },
-            "onStateChange": (event) => {
-              if (event.data === YT.PlayerState.ENDED) {
-                if (index + 1 < playerObjects.length) {
-                  playerObjects[index + 1].playVideo(); // Play next video
-                } else {
-                  sendCompletionToBackend(); // All videos finished
-                }
-              }
-            }
-          }
-        });
-      });
-    }
-  
-    function sendCompletionToBackend() {
-      fetch("/user/training-page/completed", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ message: "All videos watched" })
-      })
-      .then(response => {
-    if (!response.ok) throw new Error(`HTTP Error! Status: ${response.status}`);
-    return response.json();
-  })
-      .then(data => console.log("Backend Response:", data))
-      .catch(error => console.error("Error sending completion:", error));
-    }
-  
-    // Load YouTube API
-    let script = document.createElement("script");
-    script.src = "https://www.youtube.com/iframe_api";
-    document.body.appendChild(script);
-  </script>
-  
+
   
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-</body>
+    <script>
+      let videoPlayers = document.querySelectorAll(".video-player");
+      let playerObjects = [];
+
+      function onYouTubeIframeAPIReady() {
+        videoPlayers.forEach((iframe, index) => {
+          playerObjects[index] = new YT.Player(iframe, {
+            events: {
+              onReady: (event) => {
+                if (index === 0) event.target.playVideo();
+              },
+              onStateChange: (event) => {
+                if (event.data === YT.PlayerState.ENDED) {
+                  if (index + 1 < playerObjects.length) {
+                    playerObjects[index + 1].playVideo();
+                  } else {
+                    sendCompletionToBackend();
+                  }
+                }
+              },
+            },
+          });
+        });
+      }
+
+      function sendCompletionToBackend() {
+        fetch("/user/training-page/completed", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ message: "All videos watched" }),
+        })
+          .then((response) => response.json())
+          .then((data) => console.log("Backend Response:", data))
+          .catch((error) => console.error("Error sending completion:", error));
+      }
+
+      let script = document.createElement("script");
+      script.src = "https://www.youtube.com/iframe_api";
+      document.body.appendChild(script);
+    </script>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+      integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
+      integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
+      crossorigin="anonymous"
+    ></script>
+  </body>
 </html>

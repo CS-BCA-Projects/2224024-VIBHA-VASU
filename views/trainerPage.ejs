@@ -7,28 +7,75 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
 <body>
-    <div>
-        <h1><%= trainerData.fullName %></h1>
-        <h2><%= trainerData.userName %></h2>
-        <div>
-            <img src="<%= trainerData.profileImage %>" alt="error">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+          <div class="navbar-brand">YogiMaster</div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    
+                  </li>
+                </li>
+            </ul>
+            
+            <div class="d-flex">
+              <div class="nav-item">
+                <a class="nav-link active " href="/gh4g453j5/trainer-verification">List</a>
+              </div>
+            </div>
+            
+          </div>
         </div>
-        <div>
-            <img src="<%= trainerData.certificate %>" alt="error">
+      </nav>
+    <div class="container border border-4 rounded-3 mt-4 p-3">
+        <div class="row">
+          <div class="col-xl-4 col-lg-5">
+            <div class="m-2 d-flex justify-content-center  p-2 " style="border-radius: 40vw">
+              <img
+                src="<%= trainerData.profileImage %>"
+                class="shadow-lg"
+                style="border-radius: 40vw;width: 18vw;height: 18vw;"
+                alt="error"
+              />
+            </div>
+          </div>
+          <div class="col-xl-8 col-lg-7">
+            <div class="m-2  p-2 border border-3 rounded-4">
+              <div class="mb-3 text-start">
+                  <h4 class="display-5 "><%= trainerData.fullName %></h4>
+                  <h6 class="fs-5 fw-light"><%= trainerData.userName %></h6>
+              </div>
+              <div class="text-break mb-3 fs-5 text-start">
+                  Bio : <%= trainerData.bio %>
+              </div>
+              <div class="mb-3 text-start fs-5">
+                  Age : <%= trainerData.age %> Years
+              </div>
+              <div class="mb-3 text-start fs-5">
+                  Gender : <%= trainerData.gender %>
+              </div>
+              <div class="m-2 d-flex justify-content-center">
+                <img
+                  src="<%= trainerData.certificate %>"
+                  class="shadow-lg rounded-2 w-75"
+                  
+                  alt="error"
+                />
+              </div>
+              <div class="mb-2 text-center fs-5">
+                <a
+                  href="/gh4g453j5/trainer-verified/<%= trainerData.id %>"
+                  class="btn btn-danger rounded-5"
+                  >Verify Trainer</a
+                >
+              </div>
+            </div>
+          </div>
         </div>
-        <div>
-            <%= trainerData.bio %>
-        </div>
-        <div>
-            <%= trainerData.age %>
-        </div>
-        <div>
-            <%= trainerData.gender %>
-        </div>
-        <div>
-            <a href="/gh4g453j5/trainer-verified/<%= trainerData.id %>">Verify Trainer</a>
-        </div>
-    </div>
+      </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>

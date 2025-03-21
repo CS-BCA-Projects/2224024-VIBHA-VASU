@@ -12,30 +12,38 @@
     />
   </head>
   <body>
+
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
-      <div class="container-fluid">
-        <div class="navbar-brand">YogiMaster</div>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li class="nav-item">
-                  <a class="nav-link active" aria-current="page" href="/user/select-trainer">Select Trainer</a>
+        <div class="container-fluid">
+          <div class="navbar-brand">YogiMaster</div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/trainer/upload-video">Upload</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/trainer/enrolled-users">Users</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/trainer/trainer-videos">Videos</a>
                 </li>
-              </li>
-          </ul>
-          
-          <div class="d-flex">
               
-            <div class="nav-item">
-              <a class="nav-link active " href="/user/user-data">Profile</a>
+            </ul>
+            
+            <div class="d-flex">
+                
+              <div class="nav-item">
+                <a class="nav-link active text-danger fw-bold" href="/trainer/logout-trainer">Logout</a>
+              </div>
             </div>
+            
           </div>
-          
         </div>
-      </div>
-    </nav>
+      </nav>
+
     <div class="container border border-4 rounded-3 mt-4 p-3">
       <div class="row">
         <div class="col-xl-4 col-lg-5">
@@ -62,13 +70,6 @@
             </div>
             <div class="mb-3 text-start fs-5">
                 Gender : <%= trainerData.gender %>
-            </div>
-            <div class="mb-2 text-center fs-5">
-              <a
-                href="/user/select-trainer/trainerProfile/<%= trainerData.id %>"
-                class="btn btn-danger rounded-5"
-                >Select Trainer</a
-              >
             </div>
           </div>
         </div>
