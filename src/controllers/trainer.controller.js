@@ -237,7 +237,7 @@ const uploadVideo=asyncHandler(async(req,res)=>{
     }
     return res
       .status(201)
-      .json(new ApiResponse(200, uploadedVideo, "Video Uploaded on DB"));
+      .redirect('/trainer/trainer-data');
 
   } catch (error) {
     if (error.code === 11000) {
