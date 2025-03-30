@@ -79,6 +79,7 @@ const loginAdmin = asyncHandler(async (req, res) => {
   const options = {
     httpOnly: true,
     secure: true,
+    sameSite: "Strict",
   };
   return res
     .status(200)
