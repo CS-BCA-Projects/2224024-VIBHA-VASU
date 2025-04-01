@@ -21,7 +21,7 @@ import {
 const userRouter = Router();
 
 userRouter.route("/register-user").get(registerUserPage);
-userRouter.route("/register-user").post(
+userRouter.route("/register--user").post(
   upload.fields([
     {
       name: "profileImage",
@@ -32,7 +32,7 @@ userRouter.route("/register-user").post(
 );
 
 userRouter.route("/login-user").get(loginUserPage);
-userRouter.route("/login-user").post(loginUser);
+userRouter.route("/login--user").post(loginUser);
 
 //secured routes
 userRouter.route("/logout-user").get(verifyUser, logoutUser);

@@ -18,6 +18,8 @@ const verifyUser =asyncHandler( async (req, res, next) => {
             throw new ApiError(401,"Unauthorized access");
         }
         req.user=user;
+        console.log(req.user);
+        console.log("user verified")
         next();
     
 });
