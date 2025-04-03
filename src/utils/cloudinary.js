@@ -3,11 +3,7 @@ import fs from "fs";
 import dotenv from "dotenv";
 dotenv.config();
 
-console.log("Cloudinary Config:", {
-    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-    api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SECRET ? "********" : "MISSING"
-});
+
     // Configuration
     cloudinary.config({ 
         cloud_name: process.env.CLOUDNARY_CLOUD_NAME, 
@@ -16,9 +12,7 @@ console.log("Cloudinary Config:", {
     });
 
     const uploadOnCloudinary=async (localFilePath)=>{
-        console.log('cloud_name',process.env.CLOUDNARY_CLOUD_NAME)
-        console.log('api_key',process.env.CLOUDNARY_API_KEY)
-        console.log('api_secret',process.env.CLOUDNARY_API_SECRET)
+        try {
             console.log('Local file path --',localFilePath)
             if (!localFilePath) {
                 console.log("Local file path not found")
@@ -31,10 +25,14 @@ console.log("Cloudinary Config:", {
                     }
                 )
                 fs.unlinkSync(localFilePath);//to delete file from server
-                console.log("File has uploaded ",uploadresult);
+                console.log("File has uploaded ",uploadresult.url);
                 return uploadresult
             }
-        
+        } catch (error) {
+            console.log("Failed to upload on Cloudinary")
+            fs.unlinkSync(localFilePath);//to delete file from server
+            return null;
+        }
     }
     const deleteOnCloudinary=async (publicId)=>{
         try {
