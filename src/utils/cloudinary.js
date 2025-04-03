@@ -22,13 +22,13 @@ import fs from "fs";
                         resource_type:'auto'
                     }
                 )
-          //      fs.unlinkSync(localFilePath);//to delete file from server
+                fs.unlinkSync(localFilePath);//to delete file from server
                 console.log("File has uploaded ",uploadresult.url);
                 return uploadresult
             }
         } catch (error) {
             console.log("Failed to upload on Cloudinary")
-        //    fs.unlinkSync(localFilePath);//to delete file from server
+            fs.unlinkSync(localFilePath);//to delete file from server
             return null;
         }
     }
