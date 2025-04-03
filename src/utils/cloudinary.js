@@ -10,7 +10,9 @@ import fs from "fs";
     });
 
     const uploadOnCloudinary=async (localFilePath)=>{
-        
+        console.log('cloud_name',process.env.CLOUDNARY_CLOUD_NAME)
+        console.log('api_key',process.env.CLOUDNARY_API_KEY)
+        console.log('api_secret',process.env.CLOUDNARY_API_SECRET)
             console.log('Local file path --',localFilePath)
             if (!localFilePath) {
                 console.log("Local file path not found")
