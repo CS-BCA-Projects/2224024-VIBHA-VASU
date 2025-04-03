@@ -11,6 +11,7 @@ import fs from "fs";
 
     const uploadOnCloudinary=async (localFilePath)=>{
         try {
+            console.log('Local file path --',localFilePath)
             if (!localFilePath) {
                 console.log("Local file path not found")
                 return null;
