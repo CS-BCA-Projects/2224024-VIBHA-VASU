@@ -10,7 +10,8 @@ const verifyUser =asyncHandler( async (req, res, next) => {
     
         const token = req.cookies?.userAccessToken;
         if (!token) {
-            throw new ApiError(401, "Token not found");
+            //throw new ApiError(401, "Token not found");
+            return res.status(401).redirect("/user/login-user");
         }
         const decordedToken = await jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
         const user=await User.findById(decordedToken._id);
@@ -26,7 +27,8 @@ const verifyUser =asyncHandler( async (req, res, next) => {
 const verifyTrainer=asyncHandler(async (req, res, next) => {
     const token = req.cookies?.trainerAccessToken;
     if (!token) {
-        throw new ApiError(401, "Token not found");
+        //throw new ApiError(401, "Token not found");
+        return res.status(401).redirect("/trainer/Login-trainer");
     }
     const decordedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
     const trainer=await Trainer.findById(decordedToken._id);
@@ -40,7 +42,8 @@ const verifyTrainer=asyncHandler(async (req, res, next) => {
 const verifyAdmin=asyncHandler(async (req, res, next) => {
     const token = req.cookies?.adminAccessToken;
     if (!token) {
-        throw new ApiError(401, "Token not found");
+        //throw new ApiError(401, "Token not found");
+        return res.status(401).redirect("/gh4g453j5/login-admin");
     }
     const decordedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
     const admin=await Admin.findById(decordedToken._id);
