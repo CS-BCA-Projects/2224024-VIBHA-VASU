@@ -7,7 +7,6 @@ import { User } from "../models/user.model.js";
 import { Trainer } from "../models/trainer.model.js";
 import { Video } from "../models/video.model.js";
 import jwt from "jsonwebtoken";
-import e from "express";
 
 const generateAccessandRefreshToken = async (userId) => {
   try {
@@ -218,7 +217,19 @@ const selectTrainerPage = asyncHandler(async (req, res) => {
   if (!req.user) {
     throw new ApiError(401, "Unauthorized Request");
   }
-  const trainers = await Trainer.find({ verified: true });
+  const trainers = await Trainer.aggregate([
+    { 
+      $match:{
+        verified: true 
+      }
+    },
+    {
+      $match:{
+        _id:{ $ne:req.user.trainer}
+      }
+    }
+  ]
+  );
   res.render("selectTrainer", { trainers });
 });
 const trainerProfile = asyncHandler(async (req, res) => {
@@ -227,6 +238,7 @@ const trainerProfile = asyncHandler(async (req, res) => {
   }
   const { userName } = req.params;
   const trainer = await Trainer.findOne({ userName });
+  
   const age = dobToAgeFinder(trainer.dob);
   const trainerData = {
     id: trainer._id,
