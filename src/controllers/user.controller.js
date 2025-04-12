@@ -6,6 +6,7 @@ import { uploadOnCloudinary, deleteOnCloudinary } from "../utils/cloudinary.js";
 import { User } from "../models/user.model.js";
 import { Trainer } from "../models/trainer.model.js";
 import { Video } from "../models/video.model.js";
+import { Rating } from "../models/trainerRating.model.js";
 import jwt from "jsonwebtoken";
 
 const generateAccessandRefreshToken = async (userId) => {
@@ -227,9 +228,36 @@ const selectTrainerPage = asyncHandler(async (req, res) => {
       $match:{
         _id:{ $ne:req.user.trainer}
       }
+    },
+    {
+      $lookup:{
+        from: "users",
+        localField: "_id",
+        foreignField: "trainer",  
+        as: "trainees",
+      },
+    },
+    {
+      $lookup:{
+        from: "ratings",
+        localField: "_id",
+        foreignField: "trainerId",
+        as: "ratings",
+    },
+  },
+    {
+      $project: {
+        _id: 1,
+        userName: 1,
+        fullName: 1,
+        bio: 1,
+        traineesCount: { $size: "$trainees" },
+        rating: { $avg: "$ratings.rating" },
+      }
     }
   ]
   );
+  console.log(trainers);
   res.render("selectTrainer", { trainers });
 });
 const trainerProfile = asyncHandler(async (req, res) => {
@@ -389,6 +417,47 @@ const updateProgressPoints = asyncHandler(async (req, res) => {
     ).select("-password -refreshToken");
   }
 });
+const ratingPage = asyncHandler(async (req, res) => {
+  res.render("ratingPage");
+});
+const ratingTrainer = asyncHandler(async (req, res) => {
+  const { rating } = req.body;
+  if(!rating) {
+    throw new ApiError(400, "Rating is required");
+  }
+  console.log(rating);
+  const trainer= await Trainer.findById(req.user.trainer);
+  if(!trainer) {
+    throw new ApiError(400, "Trainer not found");
+  }
+  try {
+    const existedRating = await Rating.findOne({userId:req.user._id,trainerId:trainer._id});
+    if(existedRating) {
+      const updatedRating = await Rating.findByIdAndUpdate(existedRating._id,{
+        rating:rating,
+      },
+      {
+        new:true
+      });
+      if(!updatedRating) {
+        throw new ApiError(500, "Error while updating rating");
+      }
+    }
+    else {
+      const newRating = await Rating.create({
+        rating:rating,
+        trainerId:trainer._id,
+        userId:req.user._id,
+      });
+      if(!newRating) {
+        throw new ApiError(500, "Error while creating rating");
+      }
+    }
+    return res.status(200).redirect("/user/user-data");
+  } catch (error) {
+    throw new ApiError(500, "Error while rating trainer");
+  }
+});
 export {
   registerUserPage,
   registerUser,
@@ -402,4 +471,6 @@ export {
   selectTrainer,
   trainingPage,
   updateProgressPoints,
+  ratingPage,
+  ratingTrainer,
 };
