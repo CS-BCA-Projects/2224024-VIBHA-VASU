@@ -108,7 +108,7 @@ const loginUser = asyncHandler(async (req, res) => {
     .status(200)
     .cookie("userAccessToken", userAccessToken, options)
     .cookie("userRefreshToken", userRefreshToken, options)
-    .redirect("/user/user-data");
+    .redirect("/user/training-page");
 });
 
 const loginUserPage = asyncHandler(async (req, res) => {
@@ -307,7 +307,8 @@ const trainingPage = asyncHandler(async (req, res) => {
     throw new ApiError(401, "Unauthorized Request");
   }
   if (!req.user.trainer) {
-    throw new ApiError(401, "Trainer not selected");
+    return res
+      .redirect('/user/select-trainer');
   }
   const trainer = await Trainer.findById(req.user.trainer);
   if (!trainer) {
