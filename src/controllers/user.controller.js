@@ -312,7 +312,8 @@ const trainingPage = asyncHandler(async (req, res) => {
   }
   const trainer = await Trainer.findById(req.user.trainer);
   if (!trainer) {
-    throw new ApiError(401, "No such trainer found");
+    return res
+      .redirect('/user/select-trainer');
   }
   const age = dobToAgeFinder(req.user.dob);
   console.log(age);
